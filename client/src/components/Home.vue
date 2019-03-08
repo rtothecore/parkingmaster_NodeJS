@@ -1353,20 +1353,22 @@
           // console.log('min:' + min)
           // console.log('max:' + max)
 
+          var totalValue = sunSum + monSum + tueSum + wedSum + thuSum + friSum + satSum
+
           var tmpDataPoints = []
-          var tmpDataPoint = { y: sunSum, label: '일', name: '일', color: 'OrangeRed' }
+          var tmpDataPoint = { y: (sunSum / totalValue) * 100, label: '일', name: '일', color: 'OrangeRed' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: monSum, label: '월', name: '월', color: '#ffc400' }
+          tmpDataPoint = { y: (monSum / totalValue) * 100, label: '월', name: '월', color: '#ffc400' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: tueSum, label: '화', name: '화', color: '#ffd500' }
+          tmpDataPoint = { y: (tueSum / totalValue) * 100, label: '화', name: '화', color: '#ffd500' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: wedSum, label: '수', name: '수', color: '#ffe100' }
+          tmpDataPoint = { y: (wedSum / totalValue) * 100, label: '수', name: '수', color: '#ffe100' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: thuSum, label: '목', name: '목', color: 'Orange' }
+          tmpDataPoint = { y: (thuSum / totalValue) * 100, label: '목', name: '목', color: 'Orange' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: friSum, label: '금', name: '금', color: '#ffe900' }
+          tmpDataPoint = { y: (friSum / totalValue) * 100, label: '금', name: '금', color: '#ffe900' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: satSum, label: '토', name: '토', color: '#ffee00' }
+          tmpDataPoint = { y: (satSum / totalValue) * 100, label: '토', name: '토', color: '#ffee00' }
           tmpDataPoints.push(tmpDataPoint)
           this.chart9Options.data[0].dataPoints = tmpDataPoints
           this.chart4.render()
@@ -1394,14 +1396,16 @@
           // console.log('min:' + min)
           // console.log('max:' + max)
 
+          var totalValue = l30m + g30mN1h + g1hN2h + g2h
+
           var tmpDataPoints = []
-          var tmpDataPoint = { y: l30m, label: '30분이내', name: '30분이내', color: '#ffc400' }
+          var tmpDataPoint = { y: (l30m / totalValue) * 100, label: '30분이내', name: '30분이내', color: '#ffc400' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: g30mN1h, label: '1시간이내', name: '1시간이내', color: '#ffd500' }
+          tmpDataPoint = { y: (g30mN1h / totalValue) * 100, label: '1시간이내', name: '1시간이내', color: '#ffd500' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: g1hN2h, label: '2시간이내', name: '2시간이내', color: 'Orange' }
+          tmpDataPoint = { y: (g1hN2h / totalValue) * 100, label: '2시간이내', name: '2시간이내', color: 'Orange' }
           tmpDataPoints.push(tmpDataPoint)
-          tmpDataPoint = { y: g2h, label: '2시간초과', name: '2시간초과', color: 'OrangeRed' }
+          tmpDataPoint = { y: (g2h / totalValue) * 100, label: '2시간초과', name: '2시간초과', color: 'OrangeRed' }
           tmpDataPoints.push(tmpDataPoint)
           this.chart8Options.data[0].dataPoints = tmpDataPoints
           this.chart3.render()

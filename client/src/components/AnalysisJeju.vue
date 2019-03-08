@@ -381,6 +381,11 @@ export default {
           valueFormatString: 'MM월 DD일'
         },
         */
+        axisX: {
+          interval: 1,
+          intervalType: 'day',
+          valueFormatString: 'YYYY-MM-DD'
+        },
         axisY: {
           title: '주차대수'
         },
@@ -396,7 +401,7 @@ export default {
           type: 'line',
           name: '입차대수',
           showInLegend: true,
-          xValueFormatString: 'YYYY-MMMM-DD',
+          xValueFormatString: 'YYYY-MM-DD',
           yValueFormatString: '#,##0\'대\'',
           color: 'Orange',
           dataPoints: [
@@ -418,7 +423,7 @@ export default {
           type: 'line',
           name: '출차대수',
           showInLegend: true,
-          xValueFormatString: 'YYYY-MMMM-DD',
+          xValueFormatString: 'YYYY-MM-DD',
           yValueFormatString: '#,##0\'대\'',
           color: 'Blue',
           dataPoints: [
@@ -923,7 +928,7 @@ export default {
           OutDataPoints[n].markerType = 'cross'
         }
       }
-/*
+
       // x축 라벨 셋팅
       var now = moment(this.sDate5)
       var end = moment(this.eDate5)
@@ -934,7 +939,7 @@ export default {
       var intervalVal = Math.floor(days / 10)
       // console.log(intervalVal)
       this.chart4Options.axisX.interval = intervalVal
-*/
+
       this.chart4Options.data[0].dataPoints = InDataPoints
       this.chart4Options.data[1].dataPoints = OutDataPoints
       this.chartForStats.render()

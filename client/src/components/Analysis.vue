@@ -385,6 +385,18 @@ export default {
           }
         },
         */
+        /*
+        axisX: {
+          interval: 1,
+          intervalType: 'day',
+          valueFormatString: 'YYYY.MM.DD'
+        },
+        */
+        axisX: {
+          interval: 1,
+          intervalType: 'day',
+          valueFormatString: 'YYYY.MM.DD'
+        },
         axisY: {
           title: '주차대수',
           includeZero: false
@@ -401,7 +413,7 @@ export default {
           type: 'line',
           name: '입차대수',
           showInLegend: true,
-          xValueFormatString: 'YYYY-MMM-DD',
+          // xValueFormatString: 'YYYY-MM-DD',
           yValueFormatString: '#,##0\'대\'',
           color: 'Orange',
           dataPoints: [
@@ -423,21 +435,21 @@ export default {
           type: 'line',
           name: '출차대수',
           showInLegend: true,
-          xValueFormatString: 'YYYY-MMMM-DD',
+          xValueFormatString: 'YYYY-MM-DD',
           yValueFormatString: '#,##0\'대\'',
           color: 'Blue',
           dataPoints: [
             /*
-            { x: new Date('2019-01-01'), y: 65 },
-            { x: new Date('2019-01-02'), y: 35 },
-            { x: new Date('2019-01-03'), y: 45 },
-            { x: new Date('2019-01-04'), y: 25 },
-            { x: new Date('2019-01-05'), y: 15 },
-            { x: new Date('2019-01-06'), y: 35 },
-            { x: new Date('2019-01-07'), y: 45 },
-            { x: new Date('2019-01-08'), y: 35 },
-            { x: new Date('2019-01-09'), y: 75 },
-            { x: new Date('2019-01-10'), y: 35 }
+            { x: new Date('2019.01.01'), y: 65 },
+            { x: new Date('2019.01.02'), y: 35 },
+            { x: new Date('2019.01.03'), y: 45 },
+            { x: new Date('2019.01.04'), y: 25 },
+            { x: new Date('2019.01.05'), y: 15 },
+            { x: new Date('2019.01.06'), y: 35 },
+            { x: new Date('2019.01.07'), y: 45 },
+            { x: new Date('2019.01.08'), y: 35 },
+            { x: new Date('2019.01.09'), y: 75 },
+            { x: new Date('2019.01.10'), y: 35 }
             */
           ]
         }
@@ -844,11 +856,22 @@ export default {
       })
       // console.log(response.data)
 
-      var InDataPoints = []
+      // 시작날짜와 종료날짜 사이의 일을 이용하여 데이터배열을 만든다
+      var InDataPoints = this.getBetweenDayData(this.sDate5, this.eDate5)
+      // console.log(InDataPoints)
+
       for (var i = 0; i < response.data.length; i++) {
-        var tmpDataPoint = { x: new Date((response.data[i]._id).replace(/-/gi, '.')), y: response.data[i].count }
-        InDataPoints.push(tmpDataPoint)
+        for (var p = 0; p < InDataPoints.length; p++) {
+          if (new Date((response.data[i]._id).replace(/-/gi, '.')).getTime() === InDataPoints[p].x.getTime()) {
+            InDataPoints[p].y = response.data[i].count
+          }
+        }
       }
+
+      // 시작점, 끝점 xLabel 찍기
+      // InDataPoints[0].label = 'testStart'
+      // InDataPoints[InDataPoints.length - 1].label = 'testEnd'
+      // console.log(InDataPoints)
 
       // 입차 최대값, 최소값
       var InDataPointsMax = Math.max.apply(Math, InDataPoints.map(function (o) { return o.y }))
@@ -878,11 +901,22 @@ export default {
       })
       // console.log(response2.data)
 
-      var OutDataPoints = []
+      // 시작날짜와 종료날짜 사이의 일을 이용하여 데이터배열을 만든다
+      var OutDataPoints = this.getBetweenDayData(this.sDate5, this.eDate5)
+      // console.log(InDataPoints)
+
       for (var j = 0; j < response2.data.length; j++) {
-        var tmpDataPoint2 = { x: new Date((response2.data[j]._id).replace(/-/gi, '.')), y: response2.data[j].count }
-        OutDataPoints.push(tmpDataPoint2)
+        for (var q = 0; q < OutDataPoints.length; q++) {
+          if (new Date((response2.data[j]._id).replace(/-/gi, '.')).getTime() === OutDataPoints[q].x.getTime()) {
+            OutDataPoints[q].y = response.data[j].count
+          }
+        }
       }
+
+      // 시작점, 끝점 xLabel 찍기
+      // OutDataPoints[0].label = 'testStart'
+      // OutDataPoints[OutDataPoints.length - 1].label = 'testEnd'
+      // console.log(OutDataPoints)
 
       // 출차 최대값, 최소값
       var OutDataPointsMax = Math.max.apply(Math, OutDataPoints.map(function (o) { return o.y }))
@@ -903,7 +937,7 @@ export default {
           OutDataPoints[n].markerType = 'cross'
         }
       }
-/*
+
       // x축 라벨 셋팅
       var now = moment(this.sDate5)
       var end = moment(this.eDate5)
@@ -914,7 +948,9 @@ export default {
       var intervalVal = Math.floor(days / 10)
       // console.log(intervalVal)
       this.chart4Options.axisX.interval = intervalVal
-*/
+
+      console.log(InDataPoints)
+      console.log(OutDataPoints)
       this.chart4Options.data[0].dataPoints = InDataPoints
       this.chart4Options.data[1].dataPoints = OutDataPoints
       this.chartForStats.render()
@@ -978,6 +1014,20 @@ export default {
         e.dataSeries.visible = true
       }
       e.chart.render()
+    },
+    getBetweenDayData: function (startDate, endDate) {
+      // https://www.npmjs.com/package/moment-range
+      const start = moment(startDate, 'YYYY-MM-DD')
+      const end = moment(endDate, 'YYYY-MM-DD')
+      const range = moment.range(start, end)
+      var tmpDatas = []
+      for (let month of range.by('day')) {
+        var tmpData = {}
+        tmpData.x = new Date(month.format('YYYY.MM.DD'))
+        tmpData.y = 0
+        tmpDatas.push(tmpData)
+      }
+      return tmpDatas
     }
   }
 }
